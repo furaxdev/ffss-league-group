@@ -33,7 +33,7 @@ export default function Home() {
           <h1 className='text-center'>Group {group.name}</h1>
           <br />
           <br />
-          <table className='table'>
+          <table className='table mt-2'>
             <thead>
               <tr>
                 <th>SLOT</th>
