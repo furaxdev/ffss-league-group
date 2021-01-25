@@ -1,65 +1,78 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import data from '../data.json'
+import { useState } from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default function Home() {
+  const [group, setgroup] = useState(null)
+  const handleClick = () => {
+    const id = document.getElementById('group').value
+    let grouptoshow = data[id]
+    setgroup({
+      ...grouptoshow,
+      name: id,
+    })
+  }
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className='container mt-4'>
+      <input
+        className='form-control'
+        type='number'
+        name='group'
+        id='group'
+        placeholder='Enter group'
+      />
+      <br />
+      <button className='btn btn-success' onClick={handleClick}>
+        Submit
+      </button>
+      <br />
+      <br />
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      {group ? (
+        <>
+          <h1 className='text-center'>Group {group.name}</h1>
+          <br />
+          <br />
+          <table className='table'>
+            <thead>
+              <tr>
+                <th>SLOT</th>
+                <th>Team Name</th>
+                <th>Team Tag</th>
+                <th>Leader</th>
+                <th>Players</th>
+              </tr>
+            </thead>
+            <tbody>
+              {group.teams.map((team) => {
+                return (
+                  <tr>
+                    <td>{team.slot}</td>
+                    <td>{team.guild_name}</td>
+                    <td>{team.guild_tag}</td>
+                    <td>{team.leader_id}</td>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+                    <td>
+                      <ul>
+                        {team.players.map((player) => {
+                          return (
+                            <li>
+                              <strong>{player.name}</strong> {'  '} {'('}
+                              <strong>{player.freefire_id}</strong> {')'}
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </>
+      ) : (
+        ''
+      )}
     </div>
   )
 }
